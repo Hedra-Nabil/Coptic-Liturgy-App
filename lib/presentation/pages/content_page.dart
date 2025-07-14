@@ -83,18 +83,20 @@ class ContentListView extends StatefulWidget {
 
 class _ContentListViewState extends State<ContentListView> {
   final ScrollController _scrollController = ScrollController();
+  late final FocusNode _focusNode;
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     // Add keyboard listeners for navigation
-    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -139,8 +141,9 @@ class _ContentListViewState extends State<ContentListView> {
   @override
   Widget build(BuildContext context) {
     return RawKeyboardListener(
-      focusNode: FocusNode(),
+      focusNode: _focusNode,
       onKey: _handleKeyEvent,
+      autofocus: true,
       child: GestureDetector(
         onHorizontalDragEnd: (details) {
           if (details.primaryVelocity! > 0) {
@@ -184,7 +187,7 @@ class ContentSlide extends StatefulWidget {
 }
 
 class _ContentSlideState extends State<ContentSlide> {
-  bool _isExpanded = false;
+  bool _isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
@@ -201,16 +204,16 @@ class _ContentSlideState extends State<ContentSlide> {
               });
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              decoration: BoxDecoration(
-                color: widget.isDarkMode ? Colors.grey[800] : Colors.grey[200],
-                borderRadius: BorderRadius.circular(20.0),
-              ),
+              // padding: const EdgeInsets.symmetric(
+              //   horizontal: 16.0,
+              //   vertical: 8.0,
+              // ),
+              // decoration: BoxDecoration(
+              //   color: widget.isDarkMode ? Colors.grey[800] : Colors.grey[200],
+              //   // borderRadius: BorderRadius.circular(20.0),
+              // ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Icon(
                     _isExpanded ? Icons.expand_less : Icons.expand_more,
@@ -231,48 +234,56 @@ class _ContentSlideState extends State<ContentSlide> {
           // Content section
           if (_isExpanded) const SizedBox(height: 16.0),
           if (_isExpanded)
-             IntrinsicHeight(
-               child: Row(
-                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                 children: [
-                   // Coptic text on the left side
-                    Expanded(
-                      child: widget.content.copticTransliteratedText.isNotEmpty
-                          ? SelectableText(
+            IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Coptic text on the left side
+                  Expanded(
+                    child:
+                        widget.content.copticTransliteratedText.isNotEmpty
+                            ? SelectableText(
                               widget.content.copticTransliteratedText,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: widget.fontSize,
                                 height: 1.5,
-                                color: widget.isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    widget.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                               ),
                             )
-                          : const SizedBox(),
-                    ),
-                    // Vertical divider in the middle
-                    VerticalDivider(
-                      width: 16.0,
-                      thickness: 1.0,
-                      color: widget.isDarkMode ? Colors.white30 : Colors.black12,
-                    ),
-                    // Arabic text on the right side
-                    Expanded(
-                      child: widget.content.arabicText.isNotEmpty
-                          ? SelectableText(
+                            : const SizedBox(),
+                  ),
+                  // Vertical divider in the middle
+                  VerticalDivider(
+                    width: 16.0,
+                    thickness: 1.0,
+                    color: widget.isDarkMode ? Colors.white30 : Colors.black12,
+                  ),
+                  // Arabic text on the right side
+                  Expanded(
+                    child:
+                        widget.content.arabicText.isNotEmpty
+                            ? SelectableText(
                               widget.content.arabicText,
                               textAlign: TextAlign.center,
                               textDirection: TextDirection.rtl,
                               style: TextStyle(
                                 fontSize: widget.fontSize,
                                 height: 1.5,
-                                color: widget.isDarkMode ? Colors.white : Colors.black,
+                                color:
+                                    widget.isDarkMode
+                                        ? Colors.white
+                                        : Colors.black,
                               ),
                             )
-                          : const SizedBox(),
-                    ),
-                  ],
-                ),
+                            : const SizedBox(),
+                  ),
+                ],
               ),
+            ),
         ],
       ),
     );
@@ -291,8 +302,16 @@ class ContentRepositoryProvider extends InheritedWidget {
 
   static ContentRepository of(BuildContext context) {
     final provider =
-        context.dependOnInheritedWidgetOfExactType<ContentRepositoryProvider>();
-    return provider!.repository;
+        context
+                .getElementForInheritedWidgetOfExactType<
+                  ContentRepositoryProvider
+                >()
+                ?.widget
+            as ContentRepositoryProvider?;
+    if (provider == null) {
+      throw FlutterError('ContentRepositoryProvider not found in context');
+    }
+    return provider.repository;
   }
 
   @override
