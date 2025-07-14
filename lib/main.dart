@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'package:provider/provider.dart';
+import 'core/theme/app_theme.dart';
+import 'core/utils/app_router.dart';
+import 'core/utils/app_state_manager.dart';
+import 'core/utils/dependency_injection.dart';
 
 void main() {
+  // Initialize dependency injection
+  final di = DependencyInjection();
+  di.init();
+
   runApp(const CopticLiturgyApp());
 }
 
@@ -10,16 +18,26 @@ class CopticLiturgyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'القراءات القبطية',
-      theme: ThemeData(
-        fontFamily: 'Cairo',
-        useMaterial3: true,
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: const Color(0xFFF9F5E9),
+    final di = DependencyInjection();
+
+    return ChangeNotifierProvider(
+      create: (context) => AppStateManager(),
+      child: Consumer<AppStateManager>(
+        builder: (context, appState, _) {
+          return di.wrapWithRepositoryProviders(
+            MaterialApp(
+              title: 'المكتبة الطقسية',
+              theme:
+                  appState.isDarkMode
+                      ? AppTheme.darkTheme
+                      : AppTheme.lightTheme,
+              initialRoute: AppRouter.home,
+              onGenerateRoute: AppRouter.generateRoute,
+              debugShowCheckedModeBanner: false,
+            ),
+          );
+        },
       ),
-      home: const HomeScreen(),
-      debugShowCheckedModeBanner: false,
     );
   }
-}
+} 

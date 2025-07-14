@@ -1,0 +1,37 @@
+[
+  {
+    "slide_number": 1,
+    "arabic_text": "صلاة باكر",
+    "coptic_transliterated_text": "Salat Baker"
+  },
+  {
+    "slide_number": 2,
+    "arabic_text": "صلاة الساعة الثالثة",
+    "coptic_transliterated_text": "Salat El Sa'a El Thaletha"
+  },
+  {
+    "slide_number": 3,
+    "arabic_text": "صلاة الساعة السادسة",
+    "coptic_transliterated_text": "Salat El Sa'a El Sadesa"
+  },
+  {
+    "slide_number": 4,
+    "arabic_text": "صلاة الساعة التاسعة",
+    "coptic_transliterated_text": "Salat El Sa'a El Tase'a"
+  },
+  {
+    "slide_number": 5,
+    "arabic_text": "صلاة الغروب",
+    "coptic_transliterated_text": "Salat El Ghoroub"
+  },
+  {
+    "slide_number": 6,
+    "arabic_text": "صلاة النوم",
+    "coptic_transliterated_text": "Salat El Nawm"
+  },
+  {
+    "slide_number": 7,
+    "arabic_text": "صلاة نصف الليل",
+    "coptic_transliterated_text": "Salat Nesf El Leil"
+  }
+]

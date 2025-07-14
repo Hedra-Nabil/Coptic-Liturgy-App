@@ -8,22 +8,22 @@
 
 //   final List<Map<String, String>> items = const [
 //     {
-//       'title': 'القداسات',
+//       'title': 'القداس الباسيلى ',
 //       'image': 'assets/images/liturgies.png',
 //       'file': 'التوزيع_السنوى.json',
 //     },
 //     {
-//       'title': 'التسبحة',
+//       'title': 'القداس الغروغورى ',
 //       'image': 'assets/images/psalmody.png',
 //       'file': 'psalmody.json',
 //     },
 //     {
-//       'title': 'القراءات',
+//       'title': 'القداس الكيرلسى',
 //       'image': 'assets/images/readings.png',
 //       'file': 'readings.json',
 //     },
 //     {
-//       'title': 'الأجبية',
+//       'title': 'التوزيع',
 //       'image': 'assets/images/agpeya.png',
 //       'file': 'agpeya.json',
 //     },
